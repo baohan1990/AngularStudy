@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+    <script>
+        var app = angular.module('myApp',[]);
+        app.controller('parentController',function($scope){
+            $scope.person = {
+                greeted:false,
+                name:'Baohan'
+            };
+        });
+        app.controller('childController',function($scope){
+            $scope.person.name = 'new Baohan';
+            $scope.sayHello = function(){
+                $scope.person.name = "Wen";
+            }
+        });
+    </script>
+</head>
+<body ng-app="myApp">
+    <div ng-controller="parentController">g
+        <div ng-controller="childController">
+            <a ng-click="sayHello()">Say Hello</a>
+        </div>
+        <h4>{{person}}</h4>
+    </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+    <script>
+        var app = angular.module('myApp',[]);
+        app.controller('myController',function($scope,$parse){
+            $scope.$watch('expr',function(newValue,oldValue,scope){
+                if(newValue !== oldValue){
+                    var parseFun =  $parse(newValue);
+                    $scope.parsedValue = parseFun(scope);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="myController">
+            <input ng-model="expr" type="text" placeholder="Enter An expression"/>
+            <h4>{{parsedValue}}</h4>
+        </div>
+    </div>
+</body>
+</html>

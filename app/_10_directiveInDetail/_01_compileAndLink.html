@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="myController">
+            <h3>AngularJS指令中compile和link函数详解</h3>
+            <h4>compile和pre-link有着相同的执行顺序，均有一次执行，而post-link则恰好相反</h4>
+            <h4>执行顺序分别是compile-->pre-link-->post-link</h4>
+            <h4>而且compile和pre-link执行之间dom的内容发生了变化</h4>
+            <h4>Compile函数</h4>
+            compile函数可以改变原始的dom（template element），在ng创建scope实例之前，
+            <br>
+            &nbsp;&nbsp;可以应用于当需要多个element实例，而实际只有一个template element的情况，ng-repeat就是一个最好的实例，它就是compile函数阶段生成多个原始dom节点，然后每个又生成element实例，因为compile只运行一次，因此当
+            需要生成多个element实例的时候是可以提高性能的.
+            <br>
+            <h4>tAttrs能访问到在制定标签中定义的属性(如果restrit='A')</h4>
+            function compile(tElems,tAttrs,transclude){...}
+            <br>
+            <br>
+            template element及其相关属性是作为参数传递给函数的，不过这个时候$scope是不可以用的
+            <br>
+            <h4>Pre-link函数在compile函数执行之前而在Post-link函数执行之后，该函数是可以访问$scope的，可以进行一些业务上的处理</h4>
+            function preLink(scope,iElems,iAttrs){...}
+            <h4>Post-Link函数阶段，所有的子指令已经编译完成，compile和pre-link函数已经执行完毕，这是默认的最安全编写逻辑代码的原因</h4>
+            function postLink(scope,iElems,iAttrs){...}
+            <level-one>
+                <level-two class="hello">
+                    <level-three>
+                        Hello {{name}}
+                    </level-three>
+                </level-two>
+            </level-one>
+            <h3>AngularJS中指令compile和link原理</h3>
+            AngularJS应用启动之前，他们是以HTML文本形式存在于文本编辑器之中的，应用启动之后会进行编译和连接，作用域会和HTML进行绑定，这包含这两个阶段。
+            <br>
+            <br>
+            &nbsp;&nbsp;编译阶段，AngularJS会遍历整个文档，并根据JavaScript中指令的定义处理页面，一旦遍历完成，就会返回一个叫作模板函数的函数，
+            <br>
+            在该函数没有返回之前，我们可以对dom树进行更改。既是在compile()函数中对dom进行添加和删除时安全的。
+            <br>
+            &nbsp;&nbsp;compile和link的区别：
+            <br>
+            1.compile函数的作用是对指令的模板进行转换；
+            <br>
+            2.link是在模型和视图间建立联系，包括在元素建立监听事件；
+            <br>
+            3.scope是在链接阶段被绑定到元素上的，因此compile函数中无法操作$scope；
+            <br>
+            4.对于同一个指令的多个实例，compile只会执行一次，而link函数则会对每个指令的实例都会执行一次；
+            <br>
+            5.link函数是默认的最安全的编写逻辑代码的地方；
+            <br>
+            6.请注意，如果编写自定义的compile函数，则自定义的link函数则无效，因为compile函数应该返回一个function link(){...}供后续处理。
+            <div autohello="5" speakTime="5">
+                <p spean>小平你好</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+<script>
+    var app = angular.module('myApp',[]);
+
+    function createDirective(name){
+        return function(){
+            return{
+                restrict : 'E',
+                compile : function(tElems,tAttrs){
+                    /*console.log(name+':compile');
+                    console.log(name+':compile=>'+tElems.html());*/
+                    //在编译阶段输出tAttrs
+                    console.log(name+'compile==>'+tAttrs);
+                    /*return {
+                        pre:function(scope,iElem,iAttrs){
+                            console.log(name+':pre link');
+                            console.log(name+':pre link=>'+iElem.html());
+                        },
+                        post:function(scope,iElem,iAttrs){
+                            console.log(name+':post link');
+                            console.log(name+':post link=>'+iElem.html());
+                        }
+                    }*/
+                }
+            }
+        }
+    }
+
+    app.directive('levelOne',createDirective('levelOne'));
+    app.directive('levelTwo',createDirective('levelTwo'));
+    app.directive('levelThree',createDirective('levelThree'));
+
+    app.controller('myController',function($scope){
+        $scope.name = 'Baohan';
+    });
+
+    app.directive('autohello',function(){
+        var directiveDefinitionObject = {
+            restrict : 'A',
+            compile : function(tElem,tAttrs){
+                console.log('compile start!');
+                console.log('=>'+tAttrs.autohello);
+                console.log('=>'+tAttrs.speakTime)
+                var copyTemplate = tElem.html();
+                for(var i = 0;i < tAttrs.autohello-1;i++){
+                    tElem.append(copyTemplate);
+                };
+                /**
+                 * compile()内部返回Link以供后续处理
+                 * */
+                return function(scope,iElem,iAttrs){
+                    console.log("directive link start");
+                }
+            }
+        };
+        return directiveDefinitionObject;
+    });
+
+
+</script>

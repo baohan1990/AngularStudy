@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+<body>
+
+<div ng-app="" ng-init="quantity=1;cost=5;firstName='Bao';lastName='Han';person={firstName:'John',lastName:'Doe'};array=[1,15]">
+    <!--数字计算-->
+    <p>总价：{{quantity*cost}}</p>
+    <!--字符串拼接-->
+    <p>姓名：{{firstName+" "+lastName}}</p>
+    <!--这和ng-bind是一样的-->
+    <p>姓名：<span ng-bind="firstName+' '+lastName"></span></p>
+    <!--对象-->
+    <p>姓名：{{person.firstName+' '+person.lastName}}</p>
+    <!--数组-->
+    <p>数组，第一项：{{array[0]}}</p>
+</div>
+
+</body>
+</html>

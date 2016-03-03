@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <h2>1.指令详解</h2>
+    <h3>1.1>>>指令的生命周期，开始于$compile方法并结束于link方法</h3>
+    <h3>1.2>>>参数详解</h3>
+    <h4>>>>>restrict：可选值：E/A/C/M,可以单独也可以混合使用</h4>
+    <h4>>>>>template：</h4>
+    <h4>>>>>scope参数： </h4>
+        可以被设置成true或者false，默认设置成false，被设置成true时会从父作用域继承并且创建一个新的作用域，作用域的继承是向下的而不是向上的。
+<!--    <div ng-app="myApp" ng-init="someProperty = 'some data'">
+        <div ng-init="siblingProperty = 'moredata'">
+            Inside Div Two : {{aThirdProperty}}
+            <div ng-init="aThirdProperty = 'data for 3rd property'" ng-controller="SomeController">
+                Inside Div Three : {{aThirdProperty}}
+                <div ng-init="aFourthProperty">
+                    Inside Div Fourth : {{aThirdProperty}}
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <!--some shit example-->
+    <div ng-app="myApp" ng-init="someProperty = 'some data'">
+        <!--<div ng-init="siblingProperty = 'moredata'">
+            Inside Div Two : {{aThirdProperty}}
+            <div ng-init="aThirdProperty = 'data for 3rd property'" ng-controller="SomeController">
+                Inside Div Three : {{aThirdProperty}}
+                <div ng-controller="SecondController">
+                    Inside Div Four : {{aThirdProperty}}
+                    <br>
+                    Outside myDirective : {{myProperty}}
+                    <div my-directive ng-init="myProperty = 'wow , this is cool!'">
+                        Inside myDirective : {{myProperty}}
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+        <!--隔离作用域--><!--对比scope为true-->
+        <h4>创建具有隔离作用域的指令需要将scope设置为一个{}对象，这样，指令就无法访问外部作用域了</h4>
+        <div ng-controller="MainController">
+            Outside myDirective:{{myProperty}}/{{myInheritScopeProperty}}
+            <div my-directive ng-init="myProperty = 'wow,this is cool!'"></div>
+            <div my-inherit-scope-directive ng-init="myInheritScopeProperty = 'this is myInheritScopeProperty!'"></div>
+        </div>
+        <h4>>>>>绑定策略： </h4>
+        <h4>>>>>transclude：</h4>
+        <div sidebox title="Links">
+            <ul>
+                <li>First Link</li>
+                <li>Second Link</li>
+            </ul>
+        </div>
+        <div sidebox title="TagCloud">
+            <div class="tagcloud">
+                <a href="">Graphics</a>
+                <a href="">AngularJS</a>
+                <a href="">D3</a>
+                <a href="">Font-end</a>
+                <a href="">Startup</a>
+            </div>
+        </div>
+        <h4>>>>>controller：</h4>
+        <h4>>>>>controllerAs：</h4>
+        as 别名
+        <div ng-controller="ControllerAsController as main">
+            <input type="text" ng-model="main.name"/>
+            <span>{{main.name}}</span>
+        </div>
+        <h4>AngularJS的生命周期</h4>
+            AngularJS应用启动后会进行编译和链接，作用域会同HTML进行绑定，应用可以对用户在HTML中的操作进行实时响应，
+        <h4>AngularJS指令中compile和link函数详解</h4>
+
+    </div>
+
+
+</body>
+<script src="../x_directive/angular.js"></script>
+<script>
+    var app = angular.module("myApp",[]);
+    app.controller('SomeController',function($scope){
+
+    });
+
+    app.controller('SecondController',function($scope){
+
+    });
+
+/*    app.directive('myDirective',function(){
+        var directiveDefinitionObject = {
+            restrict : 'A',
+            scope : true
+        };
+        return directiveDefinitionObject;
+    });*/
+
+    app.controller('MainController', function($scope){
+
+    });
+
+    app.directive('myDirective',function(){
+        var directiveDefinitionObject = {
+            restrict : 'A',
+            scope : {},
+            priority : 100,
+            template : '<div> Inside Directive : {{myProperty}}</div>'
+        };
+        return directiveDefinitionObject;
+    }).directive('myInheritScopeDirective',function(){
+        var directiveDefinitionObject = {
+            restrict : 'A',
+            scope : true,
+            template : '<div>Inside Directive : {{myProperty}}</div>'
+        };
+        return directiveDefinitionObject;
+    });
+
+    app.directive('sidebox',function(){
+        var directiveDefinitionObject = {
+            restrict : 'EA',
+            scope : {
+                title : '@'
+            },
+            transclude : true,
+            template : '<div class="sidebox"><div class="content"><h2 class="header">{{title}}</h2><span></span></div></div>'
+        };
+        return directiveDefinitionObject;
+    });
+
+    app.controller('ControllerAsController',function(){
+        this.name = "Ari";
+    });
+</script>
+</html>

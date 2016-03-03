@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.js"></script>
+    <script>
+        var app = angular.module('myApp',[]);
+        app.controller('myController',function(){
+
+        });
+        app.filter('capitalized',function(){
+            return function(input,judge){
+                if(input&&judge){
+                    return input[0].toUpperCase()+input.slice(1);
+                }
+            };
+        });
+    </script>
+</head>
+<body>
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <input ng-model="myInput"/>
+        <pre>{{myInput|lowercase|capitalized:true}}</pre>
+    </div>
+</div>
+</body>
+</html>

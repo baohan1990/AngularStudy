@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="MyController">
+            <h3>依赖注入是一种设计模式，它可以去除对依赖关系的硬编码，从而在运行时改变甚至移除依赖关系。</h3>
+            <h3>在ng中依赖可以通过字符串进行传递。</h3>
+                    <button ng-click="sayHello();">Say Something</button>
+            <h3>注入器（$Inject）</h3>
+            <h3>AngularJS中的Provider的定义方法</h3>
+            <h4>
+                constant，定义常量：{{oneOfConstant}}/{{sugarOfConstant}}<br>
+                通过constant定义的值不能再被修改，可以注入到任何地方，但是不能被修饰器（decorator）所修饰。
+                <br><br>
+                value，定义number,string,function,constant,可以被修改，不能被注入到config中，但是能够被decorator装饰<br>
+                service：{{oneOfService}}<br>
+                factory：{{oneOfFactory}}/{{privateFunc}}<br>
+                service和factory的区别：
+                <br>
+                &nbsp;&nbsp;1.service中不用返回（似乎返回也不会犯错），而factory可以返回任何东西<br>
+                &nbsp;&nbsp;2.所有的providers都是单例的，但是factory比service更加灵活一点，factory更适合设计一个需要私有方法的类的时候使用<br>
+                <br>
+                provide，定义可配置的provide：{{oneOfProvider}}<br>
+            </h4>
+        </div>
+    </div>
+</body>
+<script src="../x_directive/angular.js"></script>
+<script>
+    var app = angular.module('myApp',[]);
+
+    app.config(function($provide){
+        $provide.provider('greeting',function(){
+            this.$get = function(){
+                return  function(name){
+                    alert('Hello , '+ name);
+                }
+            }
+        });
+    });
+
+    //constant
+    app.config(function($provide){
+        $provide.constant('MovieTitle','The Matrix');
+    });
+    //语法糖
+    app.constant('SugarOfConstant','SugarOfConstant');
+    app.constant('SugarOfConstant','UpdatedSugarOfConstant');
+    //provider
+    app.provider('movie',function(){
+        var version;
+        return {
+            setVersion :function(value){
+                version = value;
+            },
+            $get : function(){
+                return {
+                    title : 'The Matrix'+' '+version
+                }
+            }
+        }
+    });
+    //对provide进行配置，name+'Provider'
+    app.config(function(movieProvider){
+        movieProvider.setVersion(" Version F");
+    });
+    //service和factory的注入
+/*    function factory(name, factoryFn, enforce) {
+        return provider(name, {
+            $get: enforce !== false ? enforceReturnValue(name, factoryFn) : factoryFn
+        });
+    }
+    function service(name, constructor) {
+        return factory(name, ['$injector', function($injector) {
+            return $injector.instantiate(constructor);
+        }]);
+    }*/
+    //factory的定义
+    app.factory('movieFactory',function(){
+        return {
+            title : 'The Matrix'
+        }
+    });
+    app.factory('privateFactory',function(){
+        var privateFunc = function(name){
+            return name.split("").reverse().join("");
+        }
+        return {
+            hello : function(name){
+                return 'Hello , '+privateFunc(name);
+            }
+        }
+    });
+    //service的定义
+    app.service('movieService',function(){
+        this.title = 'The Matrix';
+    });
+    //greeting movieTitle movieProvide注入
+    app.controller('MyController',function($scope,greeting,MovieTitle,SugarOfConstant,movie,movieService,movieFactory,privateFactory){
+        $scope.sayHello = function(){
+            greeting('Baohan');
+        };
+        $scope.oneOfConstant = MovieTitle;
+        $scope.sugarOfConstant = SugarOfConstant;
+        $scope.oneOfProvider = movie.title;
+        $scope.oneOfService = movieService.title;
+        $scope.oneOfFactory = movieFactory.title;
+        $scope.privateFunc = privateFactory.hello('Baohan');
+    });
+
+</script>
+</html>

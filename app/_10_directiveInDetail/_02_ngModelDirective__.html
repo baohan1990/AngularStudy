@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        [contenteditable]{
+            border : 1px solid black;
+            background-color : white;
+            min-height : 20px;
+        }
+
+        .ng-invalid{
+            border : 1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="myController">
+            <form name="myForm">
+                <div contenteditable name="myWidget" stripBr="true" required ng-model="userContent">
+                    Change me!
+                </div>
+                <span ng-show="myForm.myWidget.$error.required">Required!</span>
+                <hr>
+                <div ng-model="userContent"></div>
+            </form>
+
+        </div>
+    </div>
+
+</body>
+<script src="../x_directive/angular.js"></script>
+<script src="../x_directive/angular-sanitize.js"></script>
+<script>
+    var app = angular.module('myApp',['ngSanitize']);
+
+    //定义指令
+    app.directive('contenteditable',['$sce',function($sce){
+        var directiveDefinitionObject = {
+            restrict : 'A',
+            require : '?ngModel',
+            link : function(scope,ele,attrs,ngModel){
+                if(!ngModel)
+                    return;//如果ngMode模块没有加载进来，
+                ngModel.$render = function(){
+                    ele.html($sce.getTrustedHtml(ngModel.$viewValue || ''));
+                }
+                ele.on('blur keyup change',function(){
+                    scope.$applyAsync(read);
+                });
+                read();
+                function read(){
+                    var html = ele.html();
+                    if(attrs.stripBr && html == '<br>'){
+                        html = '';
+                    }
+                    ngModel.$setViewValue(html);
+                }
+            }
+        };
+        return directiveDefinitionObject;
+    }]);
+
+    app.controller('myController',function(){
+
+    });
+
+</script>
+</html>

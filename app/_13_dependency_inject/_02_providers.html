@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="myController">
+            <p>Enter a number:<input type="number" ng-model="number"/></p>
+            <button ng-click="square();">X<sup>2</sup></button>
+            <p>Result : {{result}}</p>
+        </div>
+    </div>
+</body>
+<script src="../x_directive/angular.js"></script>
+<script>
+    var app = angular.module('myApp',[]);
+
+    //定义MathProvider,provider中最主要的是对($get)方法的定义
+    app.provider('MathProvider',function(){
+        return {
+            $get : function(){
+                var factory = {};
+                factory.multiply = function(a,b){
+                    return a*b;
+                };
+                return factory;
+            }
+        }
+    });
+
+    app.value('defaultValue',5);
+
+    app.controller('myController',function($scope,MathProvider,defaultValue){
+        $scope.number = defaultValue;
+        $scope.result = MathProvider.multiply($scope.number , $scope.number);
+        $scope.square = function(){
+            $scope.result = MathProvider.multiply($scope.number , $scope.number);
+        }
+    });
+</script>
+</html>

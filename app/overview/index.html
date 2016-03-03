@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div ng-app="myApp" ng-controller="myCtrl" >
+    <p>姓：<input type="text" ng-model="firstName"/></p>
+    <p>名：<input type="text" ng-model="lastName"/></p>
+    <h1>欢迎{{firstName + "" + lastName}}</h1>
+</div>
+</body>
+<script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"/>
+<script>
+    var app = angular.module("myApp",[]);
+    app.controller("myCtrl",function($scope){
+        $scope.firstName = "Bao";
+        $scope.lastName = "han";
+    });
+</script>
+</html>

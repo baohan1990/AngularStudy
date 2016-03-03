@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        input.ng-invalid {
+            background-color: lightblue;
+        }
+    </style>
+</head>
+<body>
+    <div ng-app="myApp" ng-controller="myCtrl">
+        <!--ng-init="names=['bao','han','wen']"-->
+        <!--
+            指令：
+        -->
+        <p>使用ng-repeat来循环数组中的数据</p>
+        <ul>
+            <li ng-repeat="ele in names">
+                {{ele}}
+            </li>
+        </ul>
+        <br/>
+        <!--
+            创建自定义指令：
+        -->
+        <p>ng-model指令：
+            1）双向绑定，当修改输入域的值时，AngularJS属性的值也将被修改
+            2）标记ng-model可以为数据提供状态值
+        </p>
+        名字：<input ng-model="name"/><br/>
+        欢迎：<span>{{name}}</span><br/>
+        <p>ng-show指令：
+            1）验证用户输入</p>
+        <form name="myForm">
+            Email:
+            <input type="email" name="myAddress" ng-model="myAddress"/>
+            <span ng-show="myForm.myAddress.$error.email">不是一个合法的邮箱地址</span><br/>
+            状态：
+            {{myForm.myAddress.$valid}}
+            {{myForm.myAddress.$dirty}}
+            {{myForm.myAddress.$touched}}<br/>
+            <h1>ng-empty;ng-invalid用于验证样式</h1>
+            请输入你的名字：<input name="myName"ng-model="myName" required>
+        </form>
+        <h1>$scope</h1>
+        <h2>
+            AngularJS应用的组成：<br/>
+                View(视图)：HTML，<br/>
+                Model(模型)：当前视图中的可用数据，<br/>
+                Controller(控制器)：即JavaScript函数，可以添加和修改数据,<br/>
+            $scope是一个JavaScript函数，带有属性和方法，这些属性和方法可以在属兔和控制器中使用。<br/>
+        </h2>
+        <h3>$scope作用范围</h3>
+        <ul>
+            <li ng-repeat="x in names">{{x}}</li>
+        </ul>
+        <h3>跟作用域</h3>
+        <h1>
+            控制器：<br/>
+                AngularJS控制器是标准的JavaScript对象，由JavaScript构造函数所创建。
+        </h1>
+        <h1>
+            过滤器：<br/>
+                过滤器可以通过一个管道字符（|）添加到表达式和指令中<br/>
+                AngularJS过滤器用于转化数据：currency|filter|lowercase|uppercase|orderBy<br/>
+        </h1>
+        <p>姓名(大写):{{name|uppercase}}</p>
+        <p>总价：{{quantity*cost|currency}}</p>
+        <h2>向指令中添加过滤器：</h2>
+        <p><input type="text" ng-model="test"></p>
+        <p>{{test}}</p>
+        <p>
+            <ul>
+                <li ng-repeat="x in persons|filter:test|orderBy : 'country'">{{x.name+' '+x.country}}</li>
+            </ul>
+
+        </p>
+        <h1>读取JSON文件</h1>
+        <p>
+            <ul ng-repeat="x in namesfromjson |orderBy:'Country'">
+                <li>{{x.Name +' '+x.Country}}</li>
+            </ul>
+        </p>
+        <h1>AngularJS中的表格</h1>
+
+    </div>
+</body>
+    <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+<script>
+    var app = angular.module('myApp',[]);
+    app.controller('myCtrl',function($scope,$http){
+        $scope.name="Jhon Doe";
+        $scope.names = ['bao','han','wen'];
+        $scope.quantity = 50;
+        $scope.cost = 2.0;
+        $scope.persons=[{name:'Baohan',country:'China'},{name:'HanBao',country:'USA'},{name:'HanBaoBao',country:'Germany'}];
+        $http.get('./json').success(function(response){
+            $scope.namesfromjson = response.records;
+        });
+    });
+</script>
+</html>

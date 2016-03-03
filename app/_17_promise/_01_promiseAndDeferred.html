@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="myController">
+            <h3>Promise</h3>
+            <div>
+                &nbsp;&nbsp;Promise的意义就在于<strong>then链式回调</strong>,避免了异步函数的层层嵌套，将原来异步函数的层层嵌套关系转变成易于理解和阅读的链式步骤关系。
+                <br>
+                &nbsp;&nbsp;Javascript是单线程的，通过队列，以事件循环的形式进行工作。
+                <br>
+                &nbsp;&nbsp;Promise对象用来进行延迟(deferred)和异步(asynchronous)计算。
+                <br>
+                &nbsp;&nbsp;JQuery 1.6之后$.ajax()会返回一个Promise对象,他支持链式操作。<br>
+                <h4><a href="http://www.ruanyifeng.com/blog/2011/08/a_detailed_explanation_of_jquery_deferred_object.html">Deferred对象</a></h4>
+                &nbsp;&nbsp;$.when()方法允许为多个方法指定一个回调函数，$.when()的参数只能是deferred对象，如果不是done会立即执行。<br>
+                &nbsp;&nbsp;deferred对象的创建，他可以将ajax操作扩展到所有操作，使得所有操作都可以像$.ajax那样异步执行代码。
+                <br>
+                <button ng-click="E4promise()">E4promise</button>
+                <button ng-click="E4when()">E4when</button>
+            </div>
+            <hr>
+            <h3>Promise的状态</h3>
+            <div>
+                &nbsp;&nbsp;fulfilled<br>
+                &nbsp;&nbsp;rejected<br>
+                &nbsp;&nbsp;pending<br>
+                <button ng-click="E4deferred()">E4deferred</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../x_directive/angular.js"></script>
+<script src="../x_directive/jquery.1.11.js"></script>
+<script>
+    var app = angular.module('myApp',[]);
+
+    app.controller('myController',function($scope){
+        $scope.E4promise = function(){
+            var promise = $.ajax({
+                url : 'http://localhost:8089/batchTest/batchTest'
+            });
+            promise.done(function(data){
+                alert('收到响应，响应内容：'+data);
+            }).fail(function(){
+                alert('收取响应失败');
+            }).always(function(){
+                alert('无论响应成功或者失败这里都会执行！');
+            });
+        };
+
+        $scope.E4when = function(){
+            var task1 = function(){
+                alert('Time now : '+new Date().toLocaleString());
+            };
+
+            var task2 = function(){
+                $.ajax({
+                    url : 'http://localhost:8089/batchTest/batchTest'
+                });
+            };
+            var wait = setTimeout(task2,1000);
+
+            //如果$.when()的参数并非deferred对象，那么done()会被立即执行
+            $.when(task2).done(function(){
+                console.log('Task has been done!');
+            }).fail(function(){
+                console.log('Task has failed!');
+            }).always(function(){
+                console.log('Task completed!');
+            });
+        }
+
+        $scope.E4deferred = function(){
+            //这种创建deferred的方式，在外部可以改变deferred的状态，
+            //  1.所以将deferred对象的创建放入内部，见一下注释部分
+            //  2.也可以使用deferred.promise()方法阻止其他代码对deferred对象进行修改，两步：返回deferred.promise()/外部新建deferred对象
+            var anotherDeferred = $.Deferred();
+            //创建deferred对象
+            var wait = function(deferred){
+                //deferred = $.Deferred();
+                var task = function(){
+                    console.log('Task has begun...');
+                    deferred.resolve();//修改deferred的状态-->fulfilled
+                    //deferred.reject();//修改deferred的状态-->rejected
+                };
+                setTimeout(task,5000);
+                return deferred.promise();
+            };
+            var d = wait(anotherDeferred);
+            $.when(d).done(function(){
+                console.log('Task has been done');
+            }).fail(function(){
+                console.log('Task has failed!');
+            }).always(function(){
+                console.log('Task completed!');
+            });
+            //anotherDeferred在内部其实已经被替换掉了
+            d.reject();//此时这句会报错
+        };
+
+    });
+
+    var start = new Date();
+    setTimeout(function(){
+        var end = new Date();
+        /*console.log('Time elapsed : '+ (end-start)+' s.');*/
+    },500);
+    while(new Date() - start < 1000){
+
+    }
+
+</script>
+</html>

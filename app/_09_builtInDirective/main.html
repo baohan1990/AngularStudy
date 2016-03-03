@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .odd{
+            background-color: blue;
+        }
+
+        .even{
+            background-color: red;
+        }
+
+        input.ng-invalid{
+            border:1px solid red;
+        }
+
+        input.ng-valid{
+            border:1px solid green;
+        }
+    </style>
+</head>
+<body>
+    <div ng-app="myApp">
+        <h4>1)布尔属性的内置指令</h4>
+        1.ng-disabled>>><input type="text" placeholder="TypeToEnable" ng-model="someProperty"><br>
+        <!-- 如果没有ng-button属性，ng-disabled不会起作用-->
+        <button ng-button ng-disabled="!someProperty">AButton</button><br>
+        <textarea ng-disabled="isDisabled">Wait5Seconds</textarea><br>
+        2.ng-readonly>>>类似<br>
+        3.ng-checked>>><br>
+        <!-- 略微复杂，可以理解成ng-checked和checked属性实现了双向绑定，当checked属相发生变化时，ng-checked属相也发生了变化，反之亦如此-->
+        <label>someProperty={{someProperty}}</label><br>
+        <input type="checkbox" ng-checked="someProperty" ng-init="someProperty=false" ng-model="someProperty"><br>
+        4.ng-selected>>><br>
+        <label>Select Two Fish:{{isTwoFish}}</label><br>
+        <input type="checkbox" ng-model="isTwoFish"><br>
+        <select>
+            <option>One Fish</option>
+            <option ng-selected="isTwoFish">Two Fish</option>
+        </select><br>
+        5.ng-href>>><br>
+        <a ng-href="{{myHref}}">I'am feeling lucky,when I load.</a><br>
+        <a href="{{myHref}}">I'am feeling 404.</a>
+        6.ng-src>>><br>
+        AngularJS会告诉浏览器在ng-href和ng-src没有加载好之前不要加载链接和图片。
+        <h4>在指令中使用子作用域</h4>
+        ng-app和ng-controller是特殊的指令，会修改在嵌套在他们内部的指令的作用域,<br>
+        1>>>任何具有ng-app属性的DOM元素将被标记为$rootScope的起点<br>
+        在JavaScript代码中使用run()可以访问<br>
+        2.ng-controller>>>是为了在嵌套在其中的指令创造一个子作用域，<br>
+        父级作用域$scope是无法访问到子作用域的。
+        <div ng-controller="SomeController">
+            <label>someModel.someProperty in parent : </label>{{someModel.someProperty}}-{{anotherProperty}}
+            <button ng-click="someAction();">Communicate</button>
+            <div ng-controller="ChildController">
+                <label>someModel.someProperty in child:</label>{{someModel.someProperty}}-{{anotherProperty}}
+                <button ng-click="childAction();">Communicate</button>
+            </div>
+        </div><br>
+        3.ng-repeat>>><br>
+        <div ng-controller="PeopleController" >
+            <ul ng-repeat="person in people" ng-class="{even:!$even,odd:!$odd}">
+                <li>{{person.name}} lives {{person.addr}}</li>
+            </ul>
+        </div>
+        4.ng-change>>>当表单输入发生变化的时候，调用该方法<br>
+        <div ng-controller="ChangeController">
+            <input ng-model="equation.x" ng-change="change();"/><br>
+            <code>{{equation.output}}</code>
+        </div>
+        5.ng-form/ng-submit>>>><br>
+        <form name="signup_form" ng-controller="FormController" ng-submit="submitForm();">
+            <div ng-repeat="field in fields" ng-form="signup_form_input">
+                <input type="text" name="dynamic_input" ng-required="field.isRequired" ng-model="field.name" placeholder="{{field.placeholder}}"/>
+                <div ng-show="signup_form_input.dynamic_input.$dirty && signup_form_input.dynamic_input.$invalid">
+                    <span class="error" ng-show="signup_form_input.dynamic_input.$error.required">
+                        This field is required!
+                    </span>
+                </div>
+            </div>
+            <button type="submit" ng-disabled="signup_form.$invalid">Submit All</button>
+        </form>
+        6.ng-click>>>用来指定一个元素被点击时调用的表达式或者方法<br>
+        <div ng-controller="CounterController">
+            <button ng-click="count=count+1" ng-init="count=0">Increment</button>
+            count : {{count}}
+            <button ng-click="count=count-1">Decrement</button>
+        </div>
+        7.ng-select/ng-options>>><br>
+        <div ng-controller="CityController">
+            <select ng-model="city" ng-options="city.name for city in cities">
+                <option value="">Choose city</option>
+            </select>
+            <br>
+            Best City : {{city.name}}
+            <br>
+        </div>
+        <div ng-controller="ColorController">
+            <ul>
+                <li ng-repeat="color in colors">
+                    Name:<input ng-model="color.name"/>
+                    [<a href="" ng-click="colors.splice($index,1)">X-{{$index}}</a>]
+                </li>
+                <li>
+                    [<a href="" ng-click="colors.push({})">Add a color</a>]
+                </li>
+            </ul>
+            <hr/>
+            Color（null not allowed）:
+            <select ng-model="myColor" ng-options="myColor.name for myColor in colors">
+                <option value="">- -Choose color- -</option>
+            </select>
+            <hr/>
+            Color （group by shade）:
+            <select ng-model="myColor" ng-options="myColor.name group by myColor.shade for myColor in colors">
+                <option value="">- -Choose color- -</option>
+            </select>
+            <hr>
+            Select <a href ng-click="myColor={name:'not in list',shade:'other'}">bogus</a>.<br>
+            Currently selected : {{ {selected_color:myColor} }}
+            <div style="border:solid 1px black;height:20px" ng-style="{'background-color':myColor.name}">
+
+            </div>
+            <hr>
+        </div>
+        8.ng-submit>>>用来将表达式和表单onsubmit事件进行绑定，并阻止表单的默认行为（action）<br>
+        <form ng-submit="submit();" ng-controller="FormController">
+            Enter text and hit enter:
+            <input type="text" ng-model="person.name" name="person.name"/>
+            <input type="submit" dirname="person.name" value="Submit"/>
+            <code>people={{people}}</code>
+            <ul ng-repeat="object in people">
+                <li>{{object.name}}</li>
+            </ul>
+        </form>
+    </div>
+</body>
+<!--<script src="http://apps.bdimg.com/libs/angular.js/1.3.8/angular.js"></script>-->
+<script src="../x_directive/angular.js"></script>
+<script>
+    var app = angular.module('myApp',[]);
+    app.run(function($rootScope,$timeout){
+        $rootScope.isDisabled = true;
+        $timeout(function(){
+            $rootScope.isDisabled = false;
+        },5000);
+        $timeout(function(){
+            $rootScope.myHref = 'www.baidu.com';
+        },5000);
+    });
+
+    //由于原型继承的关系，引用再被继承时，是可以被子类重写的，而值是不能被重写的。
+    app.controller("SomeController",function($scope){
+        $scope.someModel = {
+            someProperty : 'Hello World!'
+        };
+        $scope.anotherProperty = 1;
+        $scope.someAction = function(){
+            $scope.someModel.someProperty  = 'Hello , parent this';
+            $scope.anotherProperty = 2;
+        };
+    }).controller("ChildController",function($scope){
+        $scope.someModel.someProperty = 'Hello small world!';
+        $scope.anotherProperty = 11;
+        $scope.childAction = function(){
+            $scope.someModel.someProperty =  'Hello , child this';
+            $scope.anotherProperty = 22;
+        };
+    });
+
+    app.controller('PeopleController',function($scope){
+        $scope.people = [
+         {name:'baohan',addr:'zhangjiang'},
+         {name:'haha',addr:'tianshang'}
+        ];
+    });
+
+    app.controller('ChangeController',function($scope){
+        $scope.equation = {};
+        $scope.change = function(){
+            $scope.equation.output = parseInt($scope.equation.x)+2;
+        };
+    });
+
+    app.controller("FormController",function($scope){
+        $scope.fields = [
+            {placeholder : 'Username',isRequired : true},
+            {placeholder : 'Password',isRequired : true},
+            {placeholder : 'Email(optional)'}
+        ];
+        $scope.submitForm = function(){
+          alert('It works!');
+        };
+    });
+
+    app.controller('CounterController',function($scope){
+
+    });
+
+    app.controller('CityController',function($scope){
+        $scope.cities = [
+            {name : 'Seattle'},
+            {name : 'San Francisco'},
+            {name : 'Chicago'},
+            {name : 'New York'},
+            {name : 'Boston'}
+        ];
+    });
+
+    app.controller('ColorController',function($scope){
+        $scope.colors = [
+            {name:'black',shade:'dark'},
+            {name:'white',shade:'light'},
+            {name:'red',shade:'light'},
+            {name:'green',shade:'dark'},
+            {name:'blue',shade:'light'}
+        ];
+    });
+
+    app.controller('FormController',function($scope){
+        $scope.person = {name:null};
+        $scope.people = [
+
+        ];
+        $scope.submit = function(){
+            if($scope.person.name){
+                $scope.people.push({name:$scope.person.name});
+                $scope.person.name = '';
+            }
+        };
+    });
+</script>
+</html>
