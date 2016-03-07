@@ -1,7 +1,4 @@
 /**
- * Created by hanBao on 2016/2/29.
- */
-/**
  * @license AngularJS v1.3.8
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT

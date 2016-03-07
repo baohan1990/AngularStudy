@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div ng-app="myApp">
+        <script type="text/ng-template" id="list.html">
+            <table>
+                <tr>
+                    <td><strong>发件人</strong></td>
+                    <td><strong>内容</strong></td>
+                    <td><strong>日期</strong></td>
+                </tr>
+                <tr ng-repeat="message in messages">
+                    <td>{{message.sender}}</td>
+                    <td><a href="#/view/{{message.id}}">{{message.subject}}</a></td>
+                    <td>{{message.date}}</td>
+                </tr>
+            </table>
+        </script>
+        <script type="text/ng-template" id="detail.html">
+            <div><strong>项目：</strong>{{message.subject}}</div>
+            <div><strong>发送者：</strong>{{message.sender}}</div>
+            <div><strong>日期：</strong>{{message.date}}</div>
+            <div>
+                <strong>To:</strong>
+                <span ng-repeat="receipient in message.recipients">
+                    {{receipient}},
+                </span>
+            </div>
+            <div>{{message.message}}</div>
+            <div><a href="#/">回到列表页</a></div>
+        </script>
+        <div ng-controller="myController">
+            <h3>HTML5页面内跳转的两种解决办法</h3>
+            <pre>
+                1.onhashchange用到window.location.hash对象(存取)
+                2.history
+                    1)pushstate
+                    2)onpopstate事件
+            </pre>
+            <div>
+                <p>{{title}}</p>
+            </div>
+            <div ng-view></div>
+        </div>
+    </div>
+</body>
+<script src="../x_directive/angular.js"></script>
+<script src="../x_directive/angular-route.js"></script>
+<script>
+    var app = angular.module('myApp',['ngRoute']);
+
+    app.controller('myController',function($scope){
+        $scope.title = '测试内容';
+
+    });
+
+    //配置路由Controller
+    function emailRouteConfig($routeProvider){
+        $routeProvider
+                .when('/',
+                {
+                    controller: ListController,
+                    templateUrl: 'list.html'
+                }
+        )
+                .when('/view/:id',
+                {
+                    controller: DetailController,
+                    templateUrl: 'detail.html'
+
+                }
+        )
+                .otherwise(
+                {
+                    redirectTo : '/'
+                }
+        );
+    }
+
+    app.config(emailRouteConfig);
+
+    messages = [{
+        id: 0, sender: "123456@qq.com", subject: "你好，这是一封邮件", date: "2015年4月13日", recipients: ['wifei@163.com','haha@163.com'], message: "你好，我是xxx，这是发送给您的邮件。"
+    }, {
+        id: 1, sender: "123456@qq.com", subject: "你好，这是一封邮件", date: "2015年4月13日", recipients: ['wifei@163.com','haha@163.com'], message: "你好，我是xxx，这是发送给您的邮件。"
+    }, {
+        id: 2, sender: "123456@qq.com", subject: "你好，这是一封邮件", date: "2015年4月13日", recipients: ['wifei@163.com','haha@163.com'], message: "你好，我是xxx，这是发送给您的邮件。"
+    }];
+
+    function ListController($scope){
+        $scope.messages = messages;
+    }
+
+    function DetailController($scope,$routeParams){
+        $scope.message = messages[$routeParams.id]
+    }
+
+</script>
+</html>

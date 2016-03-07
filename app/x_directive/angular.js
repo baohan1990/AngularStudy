@@ -1226,9 +1226,9 @@ function getNgAttribute(element, ngAttr) {
  * designates the **root element** of the application and is typically placed near the root element
  * of the page - e.g. on the `<body>` or `<html>` tags.
  *
- * Only one AngularJS application can be auto-bootstrapped per HTML document. The first `ngApp`
- * found in the document will be used to define the root element to auto-bootstrap as an
- * application. To run multiple applications in an HTML document you must manually bootstrap them using
+ * Only one AngularJS application can be auto-bootstrapped per HTML note. The first `ngApp`
+ * found in the note will be used to define the root element to auto-bootstrap as an
+ * application. To run multiple applications in an HTML note you must manually bootstrap them using
  * {@link angular.bootstrap} instead. AngularJS applications cannot be nested within each other.
  *
  * You can specify an **AngularJS module** to be used as the root module for the application.  This
@@ -1237,7 +1237,7 @@ function getNgAttribute(element, ngAttr) {
  * contain the code. See {@link angular.module} for more information.
  *
  * In the example below if the `ngApp` directive were not placed on the `html` element then the
- * document would not be compiled, the `AppController` would not be instantiated and the `{{ a+b }}`
+ * note would not be compiled, the `AppController` would not be instantiated and the `{{ a+b }}`
  * would not be resolved to `3`.
  *
  * `ngApp` is the easiest, and most common way to bootstrap an application.
@@ -1393,7 +1393,7 @@ function angularInit(element, bootstrap) {
  *   .controller('WelcomeController', function($scope) {
  *       $scope.greeting = 'Welcome!';
  *   });
- *   angular.bootstrap(document, ['demo']);
+ *   angular.bootstrap(note, ['demo']);
  * </script>
  * </body>
  * </html>
@@ -2682,8 +2682,8 @@ function jqLiteController(element, name) {
 }
 
 function jqLiteInheritedData(element, name, value) {
-  // if element is the document object work with the html element instead
-  // this makes $(document).scope() possible
+  // if element is the note object work with the html element instead
+  // this makes $(note).scope() possible
   if (element.nodeType == NODE_TYPE_DOCUMENT) {
     element = element.documentElement;
   }
@@ -2694,7 +2694,7 @@ function jqLiteInheritedData(element, name, value) {
       if ((value = jqLite.data(element, names[i])) !== undefined) return value;
     }
 
-    // If dealing with a document fragment node with a host element, and no parent, use the host
+    // If dealing with a note fragment node with a host element, and no parent, use the host
     // element as the parent. This enables directives within a Shadow DOM or polyfilled Shadow DOM
     // to lookup parent controllers.
     element = element.parentNode || (element.nodeType === NODE_TYPE_DOCUMENT_FRAGMENT && element.host);
@@ -2741,7 +2741,7 @@ var JQLitePrototype = JQLite.prototype = {
       fn();
     }
 
-    // check if document is already loaded
+    // check if note is already loaded
     if (document.readyState === 'complete') {
       setTimeout(trigger);
     } else {
@@ -3381,8 +3381,8 @@ HashMap.prototype = {
  *
  *   // use the injector to kick off your application
  *   // use the type inference to auto inject arguments, or use implicit injection
- *   $injector.invoke(function($rootScope, $compile, $document) {
- *     $compile($document)($rootScope);
+ *   $injector.invoke(function($rootScope, $compile, $note) {
+ *     $compile($note)($rootScope);
  *     $rootScope.$digest();
  *   });
  * ```
@@ -3396,14 +3396,14 @@ HashMap.prototype = {
  * markup.*
  *
  * In the following example a new block of HTML containing a `ng-controller`
- * directive is added to the end of the document body by JQuery. We then compile and link
+ * directive is added to the end of the note body by JQuery. We then compile and link
  * it into the current AngularJS scope.
  *
  * ```js
  * var $div = $('<div ng-controller="MyCtrl">{{content.label}}</div>');
- * $(document.body).append($div);
+ * $(note.body).append($div);
  *
- * angular.element(document).injector().invoke(function($compile) {
+ * angular.element(note).injector().invoke(function($compile) {
  *   var scope = angular.element($div).scope();
  *   $compile($div)(scope);
  * });
@@ -4246,7 +4246,7 @@ function $AnchorScrollProvider() {
    * @description
    * When called, it checks the current value of {@link ng.$location#hash $location.hash()} and
    * scrolls to the related element, according to the rules specified in the
-   * [Html5 spec](http://dev.w3.org/html5/spec/Overview.html#the-indicated-part-of-the-document).
+   * [Html5 spec](http://dev.w3.org/html5/spec/Overview.html#the-indicated-part-of-the-note).
    *
    * It also watches the {@link ng.$location#hash $location.hash()} and automatically scrolls to
    * match any anchor whenever it changes. This can be disabled by calling
@@ -4271,7 +4271,7 @@ function $AnchorScrollProvider() {
    *
    * <br />
    * <div class="alert alert-warning">
-   * In order for `yOffset` to work properly, scrolling should take place on the document's root and
+   * In order for `yOffset` to work properly, scrolling should take place on the note's root and
    * not some child element.
    * </div>
    *
@@ -4871,7 +4871,7 @@ function $$AsyncCallbackProvider() {
  */
 /**
  * @param {object} window The global window object.
- * @param {object} document jQuery wrapped document.
+ * @param {object} document jQuery wrapped note.
  * @param {object} $log window.console or an object with the same interface.
  * @param {object} $sniffer $sniffer service
  */
@@ -5684,7 +5684,7 @@ function $CacheFactoryProvider() {
  * ```
  *
  * **Note:** the `script` tag containing the template does not need to be included in the `head` of
- * the document, but it must be a descendent of the {@link ng.$rootElement $rootElement} (IE,
+ * the note, but it must be a descendent of the {@link ng.$rootElement $rootElement} (IE,
  * element with ng-app attribute), otherwise the template will be ignored.
  *
  * Adding via the $templateCache service:
@@ -5746,7 +5746,7 @@ function $TemplateCacheProvider() {
  * {@link ng.$compileProvider#directive directives}.
  *
  * <div class="alert alert-warning">
- * **Note:** This document is an in-depth reference of all directive options.
+ * **Note:** This note is an in-depth reference of all directive options.
  * For a gentle introduction to directives with examples of common use cases,
  * see the {@link guide/directive directive guide}.
  * </div>
@@ -5955,7 +5955,7 @@ function $TemplateCacheProvider() {
  *
  *
  * #### `templateNamespace`
- * String representing the document type used by the markup in the template.
+ * String representing the note type used by the markup in the template.
  * AngularJS needs this information as those elements need to be created and cloned
  * in a special way when they are defined outside their usual containers like `<svg>` and `<math>`.
  *
@@ -6353,7 +6353,7 @@ function $TemplateCacheProvider() {
  *  * `scope` - A {@link ng.$rootScope.Scope Scope} to bind to.
  *  * `cloneAttachFn` - If `cloneAttachFn` is provided, then the link function will clone the
  *  `template` and call the `cloneAttachFn` function allowing the caller to attach the
- *  cloned elements to the DOM document at the appropriate place. The `cloneAttachFn` is
+ *  cloned elements to the DOM note at the appropriate place. The `cloneAttachFn` is
  *  called as: <br> `cloneAttachFn(clonedElement, scope)` where:
  *
  *      * `clonedElement` - is a clone of the original `element` passed into the compiler.
@@ -6394,7 +6394,7 @@ function $TemplateCacheProvider() {
  *         scope = ....;
  *
  *     var clonedElement = $compile(templateElement)(scope, function(clonedElement, scope) {
- *       //attach the clone to DOM document at the right place
+ *       //attach the clone to DOM note at the right place
  *     });
  *
  *     //now we have reference to the cloned DOM via `clonedElement`
@@ -8165,7 +8165,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
         parent.replaceChild(newNode, firstElementToRemove);
       }
 
-      // TODO(perf): what's this document fragment for? is it needed? can we at least reuse it?
+      // TODO(perf): what's this note fragment for? is it needed? can we at least reuse it?
       var fragment = document.createDocumentFragment();
       fragment.appendChild(firstElementToRemove);
 
@@ -8473,21 +8473,21 @@ function $ControllerProvider() {
  * @requires $window
  *
  * @description
- * A {@link angular.element jQuery or jqLite} wrapper for the browser's `window.document` object.
+ * A {@link angular.element jQuery or jqLite} wrapper for the browser's `window.note` object.
  *
  * @example
    <example module="documentExample">
      <file name="index.html">
        <div ng-controller="ExampleController">
-         <p>$document title: <b ng-bind="title"></b></p>
-         <p>window.document title: <b ng-bind="windowTitle"></b></p>
+         <p>$note title: <b ng-bind="title"></b></p>
+         <p>window.note title: <b ng-bind="windowTitle"></b></p>
        </div>
      </file>
      <file name="script.js">
        angular.module('documentExample', [])
-         .controller('ExampleController', ['$scope', '$document', function($scope, $document) {
-           $scope.title = $document[0].title;
-           $scope.windowTitle = angular.element(window.document)[0].title;
+         .controller('ExampleController', ['$scope', '$note', function($scope, $note) {
+           $scope.title = $note[0].title;
+           $scope.windowTitle = angular.element(window.note)[0].title;
          }]);
      </file>
    </example>
@@ -9841,7 +9841,7 @@ function createHttpBackend($browser, createXhr, $browserDefer, callbacks, rawDoc
   function jsonpReq(url, callbackId, done) {
     // we can't use jQuery/jqLite here because jQuery does crazy shit with script elements, e.g.:
     // - fetches local scripts via XHR and evals them
-    // - adds and immediately removes script elements from the document
+    // - adds and immediately removes script elements from the note
     var script = rawDocument.createElement('script'), callback = null;
     script.type = "text/javascript";
     script.src = url;
@@ -11322,7 +11322,7 @@ function $LocationProvider() {
 
       // traverse the DOM up to find first A tag
       while (nodeName_(elm[0]) !== 'a') {
-        // ignore rewriting if no A tag (reached root element, or no parent - removed from document)
+        // ignore rewriting if no A tag (reached root element, or no parent - removed from note)
         if (elm[0] === $rootElement[0] || !(elm = elm.parent())[0]) return;
       }
 
@@ -11579,7 +11579,7 @@ function $LogProvider() {
           logFn = console[type] || console.log || noop,
           hasApply = false;
 
-      // Note: reading logFn.apply throws an error in IE11 in IE8 document mode.
+      // Note: reading logFn.apply throws an error in IE11 in IE8 note mode.
       // The reason behind this is that console.log has type "object" in IE8...
       try {
         hasApply = !!logFn.apply;
@@ -15256,8 +15256,8 @@ function $SceDelegateProvider() {
  * Note:  When enabled (the default), IE<11 in quirks mode is not supported.  In this mode, IE<11 allow
  * one to execute arbitrary javascript by the use of the expression() syntax.  Refer
  * <http://blogs.msdn.com/b/ie/archive/2008/10/16/ending-expressions.aspx> to learn more about them.
- * You can ensure your document is in standards mode and not quirks mode by adding `<!doctype html>`
- * to the top of your HTML document.
+ * You can ensure your note is in standards mode and not quirks mode by adding `<!doctype html>`
+ * to the top of your HTML note.
  *
  * SCE assists in writing code in way that (a) is secure by default and (b) makes auditing for
  * security vulnerabilities such as XSS, clickjacking, etc. a lot easier.
@@ -15276,7 +15276,7 @@ function $SceDelegateProvider() {
  * security vulnerabilities.)
  *
  * For the case of HTML, you might use a library, either on the client side, or on the server side,
- * to sanitize unsafe HTML before binding to the value and rendering it in the document.
+ * to sanitize unsafe HTML before binding to the value and rendering it in the note.
  *
  * How would you ensure that every place that used these types of bindings was bound to a value that
  * was sanitized by your library (or returned as safe for rendering by your server?)  How can you
@@ -15323,7 +15323,7 @@ function $SceDelegateProvider() {
  * `templateUrl`'s specified by {@link guide/directive directives}.
  *
  * By default, Angular only loads templates from the same domain and protocol as the application
- * document.  This is done by calling {@link ng.$sce#getTrustedResourceUrl
+ * note.  This is done by calling {@link ng.$sce#getTrustedResourceUrl
  * $sce.getTrustedResourceUrl} on the template URL.  To load templates from other domains and/or
  * protocols, you may either either {@link ng.$sceDelegateProvider#resourceUrlWhitelist whitelist
  * them} or {@link ng.$sce#trustAsResourceUrl wrap it} into a trusted value.
@@ -15351,7 +15351,7 @@ function $SceDelegateProvider() {
  * The included {@link ng.$sceDelegate $sceDelegate} comes with sane defaults to allow you to load
  * templates in `ng-include` from your application's domain without having to even know about SCE.
  * It blocks loading templates from other domains or loading templates over http from an https
- * served document.  You can change these by setting your own custom {@link
+ * served note.  You can change these by setting your own custom {@link
  * ng.$sceDelegateProvider#resourceUrlWhitelist whitelists} and {@link
  * ng.$sceDelegateProvider#resourceUrlBlacklist blacklists} for matching such URLs.
  *
@@ -15376,7 +15376,7 @@ function $SceDelegateProvider() {
  *
  *  - **'self'**
  *    - The special **string**, `'self'`, can be used to match against all URLs of the **same
- *      domain** as the application document using the **same protocol**.
+ *      domain** as the application note using the **same protocol**.
  *  - **String** (except the special value `'self'`)
  *    - The string is matched against the full *normalized / absolute URL* of the resource
  *      being tested (substring matches are not good enough.)
@@ -16246,11 +16246,11 @@ function $TimeoutProvider() {
   }];
 }
 
-// NOTE:  The usage of window and document instead of $window and $document here is
+// NOTE:  The usage of window and note instead of $window and $note here is
 // deliberate.  This service depends on the specific behavior of anchor nodes created by the
 // browser (resolving and parsing URLs) that is unlikely to be provided by mock objects and
 // cause us to break tests.  In addition, when the browser resolves a URL for XHR, it
-// doesn't know about mocked locations and resolves URLs to the real document - which is
+// doesn't know about mocked locations and resolves URLs to the real note - which is
 // exactly the behavior needed here.  There is little value is mocking these out for this
 // service.
 var urlParsingNode = document.createElement("a");
@@ -16263,7 +16263,7 @@ var originUrl = urlResolve(window.location.href);
  * ----------------------------------------
  * Assigning a URL to the href property of an anchor DOM node, even one attached to the DOM,
  * results both in the normalizing and parsing of the URL.  Normalizing means that a relative
- * URL will be resolved into an absolute URL in the context of the application document.
+ * URL will be resolved into an absolute URL in the context of the application note.
  * Parsing means that the anchor node's host, hostname, protocol, port, pathname and related
  * properties are all populated to reflect the normalized URL.  This approach has wide
  * compatibility - Safari 1+, Mozilla 1+, Opera 7+,e etc.  See
@@ -16337,11 +16337,11 @@ function urlResolve(url) {
 }
 
 /**
- * Parse a request URL and determine whether this is a same-origin request as the application document.
+ * Parse a request URL and determine whether this is a same-origin request as the application note.
  *
  * @param {string|object} requestUrl The url of the request as a string that will be resolved
  * or a parsed URL object.
- * @returns {boolean} Whether the request is for the same origin as the application document.
+ * @returns {boolean} Whether the request is for the same origin as the application note.
  */
 function urlIsSameOrigin(requestUrl) {
   var parsed = (isString(requestUrl)) ? urlResolve(requestUrl) : requestUrl;
@@ -18812,7 +18812,7 @@ var inputType = {
         // for various browsers (see https://github.com/angular/protractor/issues/562).
         function setInput(val) {
           // set the value of the element and force validation.
-          var scr = "var ipt = document.getElementById('exampleInput'); " +
+          var scr = "var ipt = note.getElementById('exampleInput'); " +
           "ipt.value = '" + val + "';" +
           "angular.element(ipt).scope().$apply(function(s) { s.myForm[ipt.name].$setViewValue('" + val + "'); });";
           browser.executeScript(scr);
@@ -18903,7 +18903,7 @@ var inputType = {
       // for various browsers (https://github.com/angular/protractor/issues/562).
       function setInput(val) {
         // set the value of the element and force validation.
-        var scr = "var ipt = document.getElementById('exampleInput'); " +
+        var scr = "var ipt = note.getElementById('exampleInput'); " +
         "ipt.value = '" + val + "';" +
         "angular.element(ipt).scope().$apply(function(s) { s.myForm[ipt.name].$setViewValue('" + val + "'); });";
         browser.executeScript(scr);
@@ -18995,7 +18995,7 @@ var inputType = {
       // for various browsers (https://github.com/angular/protractor/issues/562).
       function setInput(val) {
         // set the value of the element and force validation.
-        var scr = "var ipt = document.getElementById('exampleInput'); " +
+        var scr = "var ipt = note.getElementById('exampleInput'); " +
         "ipt.value = '" + val + "';" +
         "angular.element(ipt).scope().$apply(function(s) { s.myForm[ipt.name].$setViewValue('" + val + "'); });";
         browser.executeScript(scr);
@@ -19086,7 +19086,7 @@ var inputType = {
       // for various browsers (https://github.com/angular/protractor/issues/562).
       function setInput(val) {
         // set the value of the element and force validation.
-        var scr = "var ipt = document.getElementById('exampleInput'); " +
+        var scr = "var ipt = note.getElementById('exampleInput'); " +
         "ipt.value = '" + val + "';" +
         "angular.element(ipt).scope().$apply(function(s) { s.myForm[ipt.name].$setViewValue('" + val + "'); });";
         browser.executeScript(scr);
@@ -19177,7 +19177,7 @@ var inputType = {
       // for various browsers (https://github.com/angular/protractor/issues/562).
       function setInput(val) {
         // set the value of the element and force validation.
-        var scr = "var ipt = document.getElementById('exampleInput'); " +
+        var scr = "var ipt = note.getElementById('exampleInput'); " +
         "ipt.value = '" + val + "';" +
         "angular.element(ipt).scope().$apply(function(s) { s.myForm[ipt.name].$setViewValue('" + val + "'); });";
         browser.executeScript(scr);
@@ -22444,7 +22444,7 @@ var ngClassEvenDirective = classDirective('Even', 1);
  * the compiled element visible.
  *
  * For the best result, the `angular.js` script must be loaded in the head section of the html
- * document; alternatively, the css rule above must be included in the external stylesheet of the
+ * note; alternatively, the css rule above must be included in the external stylesheet of the
  * application.
  *
  * Legacy browsers, like IE7, do not provide attribute selector support (added in CSS 2.1) so they
@@ -22726,7 +22726,7 @@ var ngControllerDirective = [function() {
  * For Angular to be CSP compatible there are only two things that we need to do differently:
  *
  * - don't use `Function` constructor to generate optimized value getters
- * - don't inject custom stylesheet into the document
+ * - don't inject custom stylesheet into the note
  *
  * AngularJS uses `Function(string)` generated functions as a speed optimization. Applying the `ngCsp`
  * directive will cause Angular to use CSP compatibility mode. When this mode is on AngularJS will
@@ -22748,7 +22748,7 @@ var ngControllerDirective = [function() {
  *
  * This error is harmless but annoying. To prevent the error from showing up, put the `ngCsp`
  * directive on the root element of the application or on the `angular.js` script tag, whichever
- * appears first in the html document.
+ * appears first in the html note.
  *
  * *Note: This directive is only available in the `ng-csp` and `data-ng-csp` attribute form.*
  *
@@ -23502,7 +23502,7 @@ var ngIfDirective = ['$animate', function($animate) {
  * Fetches, compiles and includes an external HTML fragment.
  *
  * By default, the template URL is restricted to the same domain and protocol as the
- * application document. This is done by calling {@link $sce#getTrustedResourceUrl
+ * application note. This is done by calling {@link $sce#getTrustedResourceUrl
  * $sce.getTrustedResourceUrl} on it. To load templates from other domains or protocols
  * you may either {@link ng.$sceDelegateProvider#resourceUrlWhitelist whitelist them} or
  * {@link $sce#trustAsResourceUrl wrap them} as trusted values. Refer to Angular's {@link
@@ -23944,8 +23944,8 @@ var ngNonBindableDirective = ngDirective({ terminal: true, priority: 1000 });
  *
  * # Configuring ngPluralize with offset
  * The `offset` attribute allows further customization of pluralized text, which can result in
- * a better user experience. For example, instead of the message "4 people are viewing this document",
- * you might display "John, Kate and 2 others are viewing this document".
+ * a better user experience. For example, instead of the message "4 people are viewing this note",
+ * you might display "John, Kate and 2 others are viewing this note".
  * The offset attribute allows you to offset a number by any desired value.
  * Let's take a look at an example:
  *
@@ -23961,8 +23961,8 @@ var ngNonBindableDirective = ngDirective({ terminal: true, priority: 1000 });
  *
  * Notice that we are still using two plural categories(one, other), but we added
  * three explicit number rules 0, 1 and 2.
- * When one person, perhaps John, views the document, "John is viewing" will be shown.
- * When three people view the document, no explicit number rule is found, so
+ * When one person, perhaps John, views the note, "John is viewing" will be shown.
+ * When three people view the note, no explicit number rule is found, so
  * an offset of 2 is taken off 3, and Angular uses 1 to decide the plural category.
  * In this case, plural category 'one' is matched and "John, Mary and one other person are viewing"
  * is shown.
@@ -26055,7 +26055,7 @@ var styleDirective = valueFn({
     return;
   }
 
-  //try to bind to jquery now so that one can write jqLite(document).ready()
+  //try to bind to jquery now so that one can write jqLite(note).ready()
   //but we will rebind on bootstrap again.
   bindJQuery();
 

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div ng-app="myApp">
+        <script type="text/ng-template" id="list.html">
+            <table>
+                <thead>
+                    <tr>
+                        <td>id</td>
+                        <td>标题</td>
+                        <td>内容</td>
+                        <td>发布时间</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="new in newsList">
+                        <td>{{new.id}}</td>
+                        <td><a href="#/detail/{{new.id}}">{{new.title}}</a></td>
+                        <td>{{new.content}}</td>
+                        <td>{{new.date.toLocaleTimeString()}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </script>
+        <script type="text/ng-template" id="detail.html">
+            <a href="#/list">返回列表</a>
+            <div>
+                <a href="#/update/{{new.id}}">编辑</a>
+                <div><strong>标题：</strong>{{new.title}}</div>
+                <div><strong>内容：</strong>{{new.content}}</div>
+                <div><strong>时间：</strong>{{new.date}}</div>
+            </div>
+        </script>
+        <script type="text/ng-template" id="add.html">
+            <h1>添加新闻</h1>
+            <div>
+                <div><strong>标题：</strong><input type="text" ng-model="title"/></div>
+                <div><strong>内容：</strong><textarea ng-model="content"></textarea></div>
+                <button ng-click="add();">提交</button>
+            </div>
+        </script>
+        <script type="text/ng-template" id="update.html">
+            <h1>编辑新闻</h1>
+            <div>
+                <div><strong>标题：</strong><input type="text" ng-model="new.title"/></div>
+                <div><strong>内容：</strong><textarea ng-model="new.content">{{new.content}}</textarea></div>
+                <button ng-click="update();">提交</button>
+            </div>
+        </script>
+        <h1>新闻发布系统</h1>
+        <div>
+            <div style="width:300px;float:left">
+                <ul>
+                    <li><a href="#/list">新闻列表</a></li>
+                    <li><a href="#/add">发布新闻</a></li>
+                </ul>
+            </div>
+            <div style="padding-left: 300px;">
+                <div ng-view>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="../x_directive/angular.js"></script>
+<script src="../x_directive/angular-route.js"></script>
+<script>
+    var newsList = [{
+        id : 1,
+        title : 'title 1111',
+        content : 'content 1111111',
+        date : new Date()
+    },{
+        id : 2,
+        title : 'title 2222',
+        content : 'content 2222222',
+        date : new Date()
+    },{
+        id : 3,
+        title : 'title 3333',
+        content : 'content 3333333',
+        date : new Date()
+    },{
+        id : 4,
+        title : 'title 4444',
+        content : 'content 4444444',
+        date : new Date()
+    },{
+        id : 5,
+        title : 'title 5555',
+        content : 'content 5555555',
+        date : new Date()
+    },{
+        id : 6,
+        title : 'title 6666',
+        content : 'content 6666666',
+        date : new Date()
+    },{
+        id : 7,
+        title : 'title 7777',
+        content : 'content 7777777',
+        date : new Date()
+    }];
+
+    var app = angular.module('myApp',['ngRoute']);
+
+    app.controller('ListController',function($scope){
+        $scope.newsList = newsList;
+    });
+
+    app.controller('DetailController',function($scope,$routeParams){
+        $scope.new = newsList[$routeParams.id-1]
+    });
+
+    app.controller('AddController',function($scope,$location){
+        $scope.title = '';
+        $scope.content = '';
+        $scope.add = function(){
+            newsList.push({
+                id : newsList.length + 1,
+                title : $scope.title,
+                content : $scope.content,
+                date : new Date()
+
+            });
+            $location.path('#/list');
+        }
+    });
+
+    app.controller('UpdateController',function($scope,$routeParams,$location){
+        $scope.new = newsList[$routeParams.id-1];
+        $scope.update = function(){
+            $scope.new.date = new Date();
+            newsList[$routeParams.id-1] = $scope.new;
+            $location.path('#/list');
+        }
+    });
+
+    //配置路由
+    app.config(function($routeProvider){
+        $routeProvider.when('/',
+                {
+                    controller : 'ListController',
+                    templateUrl : 'list.html'
+                }).when('/list',
+                {
+                    controller : 'ListController',
+                    templateUrl : 'list.html'
+                }).when('/detail/:id',
+                {
+                    controller : 'DetailController',
+                    templateUrl : 'detail.html'
+                }).when('/add',
+                {
+                    controller : 'AddController',
+                    templateUrl : 'add.html'
+                }).when('/update/:id',
+                {
+                    controller : 'UpdateController',
+                    templateUrl : 'update.html'
+                }
+                ).otherwise(
+                {
+                    redirectTo : '/'
+                }
+        );
+    });
+
+
+</script>
+</html>

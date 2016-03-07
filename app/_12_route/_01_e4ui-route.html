@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../x_directive/bootstrap/bootstrap-3.3.4.css"/>
+    <style>
+        .navbar{
+            border-radius: 0;
+        }
+    </style>
+</head>
+<body>
+    <div ng-app="routeApp">
+        <script type="text/ng-template" id="partial-home">
+            <div class="jumbotron text-center">
+                <h1>The Home Page</h1>
+                <p>This page demonstrates <span class="text-danger">nested</span> views.</p>
+
+                <a ui-sref=".list" class="btn btn-primary">List</a>
+                <a ui-sref=".paragraph" class="btn btn-danger">Paragraph</a>
+
+            </div>
+            <div ui-view>
+
+            </div>
+        </script>
+
+        <script type="text/ng-template" id="partial-home-list">
+            <ul>
+                <li ng-repeat="dog in dogs">{{dog}}</li>
+            </ul>
+        </script>
+
+        <script type="text/ng-template" id="partial-about">
+            <div class="jumbotron text-center">
+                <h1>The About Page</h1>
+                <p>This page demonstrates <span class="text-danger">multiple</span> and <span class="text-danger">Named</span> views.</p>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div ui-view="columnOne"></div>
+                </div>
+                <div class="col-sm-6">
+                    <div ui-view="columnTwo"></div>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/ng-template" id="table-data">
+            <div>
+              <h2>Fine Scotches</h2>
+              <table class="table table-hover table-striped table-bordered">
+                  <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Cost</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="e in scotches">
+                        <td>{{e.name}}</td>
+                        <td>{{e.price}}</td>
+                    </tr>
+                  </tbody>
+              </table>
+            </div>
+        </script>
+
+        <nav class="navbar navbar-inverse" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" ui-sref="#">AngularUI Route</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a ui-sref="e4NestedView">E4NestedViews</a></li>
+                <li><a ui-sref="e4MultipleAndNamedViews">E4MultipleAndNamedViews</a></li>
+                <li><a ui-sref="about">ABOUT</a></li>
+            </ul>
+        </nav>
+        <div class="container">
+            <div ui-view></div>
+        </div>
+    </div>
+
+</body>
+<script src="../x_directive/angular.js"></script>
+<script src="../x_directive/angular-ui-route.js"></script>
+<script>
+    var routeApp = angular.module('routeApp',['ui.router']);
+
+    //给ng应用配置路由信息
+    routeApp.config(function($stateProvider,$urlRouterProvider){
+        //配置嵌套页面
+        $urlRouterProvider.otherwise('/e4MultipleAndNamedViews');
+        $stateProvider.state('e4NestedView',
+                {
+                    url : '/e4NestedView',
+                    templateUrl : 'partial-home'
+                }
+        ).state('e4NestedView.list',
+                {
+                    url : '/list',
+                    templateUrl : 'partial-home-list',
+                    controller : function($scope){
+                        $scope.dogs = ['Bernese', 'Husky', 'Gold'];
+                    }
+                }
+        ).state('e4NestedView.paragraph',
+                {
+                    url : '/paragraph',
+                    template : 'I could sure use a drink right now.'
+                }
+        );
+        //配置多重和具名页面
+        $stateProvider.state('e4MultipleAndNamedViews',
+                {
+                    url : '/e4MultipleAndNamedViews',
+                    views : {
+                        '' : {templateUrl : 'partial-about'},
+                        'columnOne@e4MultipleAndNamedViews' : {template : 'Look I am a column.'},
+                        'columnTwo@e4MultipleAndNamedViews' : {templateUrl : 'table-data',controller : 'scotchController'}
+                    }
+                }
+
+        );
+    });
+
+    routeApp.controller('scotchController',function($scope){
+        $scope.message = 'test';
+
+        $scope.scotches = [
+            {
+                name: 'Macallan 12',
+                price: 50
+            },
+            {
+                name: 'Chivas Regal Royal Salute',
+                price: 10000
+            },
+            {
+                name: 'Glenfiddich 1937',
+                price: 20000
+            }
+        ];
+    });
+</script>
+</html>

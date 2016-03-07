@@ -17,7 +17,7 @@
     if ( typeof module === "object" && typeof module.exports === "object" ) {
         // For CommonJS and CommonJS-like environments where a proper window is present,
         // execute the factory and get jQuery
-        // For environments that do not inherently posses a window with a document
+        // For environments that do not inherently posses a window with a note
         // (such as Node.js), expose a jQuery-making factory as module.exports
         // This accentuates the need for the creation of a real window
         // e.g. var jQuery = require("jquery")(window);
@@ -26,7 +26,7 @@
             factory( global, true ) :
             function( w ) {
                 if ( !w.document ) {
-                    throw new Error( "jQuery requires a window with a document" );
+                    throw new Error( "jQuery requires a window with a note" );
                 }
                 return factory( w );
             };
@@ -613,7 +613,7 @@
                 sortInput,
                 hasDuplicate,
 
-            // Local document vars
+            // Local note vars
                 setDocument,
                 document,
                 docElem,
@@ -813,7 +813,7 @@
                             if ( nodeType === 9 ) {
                                 elem = context.getElementById( m );
                                 // Check parentNode to catch when Blackberry 4.6 returns
-                                // nodes that are no longer in the document (jQuery #6963)
+                                // nodes that are no longer in the note (jQuery #6963)
                                 if ( elem && elem.parentNode ) {
                                     // Handle the case where IE, Opera, and Webkit return items
                                     // by name instead of ID
@@ -825,7 +825,7 @@
                                     return results;
                                 }
                             } else {
-                                // Context is not a document
+                                // Context is not a note
                                 if ( context.ownerDocument && (elem = context.ownerDocument.getElementById( m )) &&
                                     contains( context, elem ) && elem.id === m ) {
                                     results.push( elem );
@@ -958,7 +958,7 @@
             }
 
             /**
-             * Checks document order of two siblings
+             * Checks note order of two siblings
              * @param {Element} a
              * @param {Element} b
              * @returns {Number} Returns less than 0 if a precedes b, greater than 0 if a follows b
@@ -1044,7 +1044,7 @@
 
             /**
              * Detects XML nodes
-             * @param {Element|Object} elem An element or a document
+             * @param {Element|Object} elem An element or a note
              * @returns {Boolean} True iff elem is a non-HTML XML node
              */
             isXML = Sizzle.isXML = function( elem ) {
@@ -1055,27 +1055,27 @@
             };
 
             /**
-             * Sets document-related variables once based on the current document
-             * @param {Element|Object} [doc] An element or document object to use to set the document
-             * @returns {Object} Returns the current document
+             * Sets note-related variables once based on the current note
+             * @param {Element|Object} [doc] An element or note object to use to set the note
+             * @returns {Object} Returns the current note
              */
             setDocument = Sizzle.setDocument = function( node ) {
                 var hasCompare, parent,
                     doc = node ? node.ownerDocument || node : preferredDoc;
 
-                // If no document and documentElement is available, return
+                // If no note and documentElement is available, return
                 if ( doc === document || doc.nodeType !== 9 || !doc.documentElement ) {
                     return document;
                 }
 
-                // Set our document
+                // Set our note
                 document = doc;
                 docElem = doc.documentElement;
                 parent = doc.defaultView;
 
                 // Support: IE>8
-                // If iframe document is assigned to "document" variable and if iframe has been reloaded,
-                // IE will throw "permission denied" error when accessing "document" variable, see jQuery #13936
+                // If iframe note is assigned to "note" variable and if iframe has been reloaded,
+                // IE will throw "permission denied" error when accessing "note" variable, see jQuery #13936
                 // IE6-8 do not support the defaultView property so parent will be undefined
                 if ( parent && parent !== parent.top ) {
                     // IE11 does not have attachEvent, so all must suffer
@@ -1128,7 +1128,7 @@
                         if ( typeof context.getElementById !== "undefined" && documentIsHTML ) {
                             var m = context.getElementById( id );
                             // Check parentNode to catch when Blackberry 4.6 returns
-                            // nodes that are no longer in the document #6963
+                            // nodes that are no longer in the note #6963
                             return m && m.parentNode ? [ m ] : [];
                         }
                     };
@@ -1201,7 +1201,7 @@
 
                 // qSa(:focus) reports false when true (Chrome 21)
                 // We allow this because of a bug in IE8/9 that throws an error
-                // whenever `document.activeElement` is accessed on an iframe
+                // whenever `note.activeElement` is accessed on an iframe
                 // So, we allow :focus to pass through QSA all the time to avoid the IE error
                 // See http://bugs.jquery.com/ticket/13378
                 rbuggyQSA = [];
@@ -1346,7 +1346,7 @@
                             return compare;
                         }
 
-                        // Calculate position if both inputs belong to the same document
+                        // Calculate position if both inputs belong to the same note
                         compare = ( a.ownerDocument || a ) === ( b.ownerDocument || b ) ?
                             a.compareDocumentPosition( b ) :
 
@@ -1357,7 +1357,7 @@
                         if ( compare & 1 ||
                             (!support.sortDetached && b.compareDocumentPosition( a ) === compare) ) {
 
-                            // Choose the first element that is related to our preferred document
+                            // Choose the first element that is related to our preferred note
                             if ( a === doc || a.ownerDocument === preferredDoc && contains(preferredDoc, a) ) {
                                 return -1;
                             }
@@ -1421,7 +1421,7 @@
                             // Do a sibling check if the nodes have a common ancestor
                             siblingCheck( ap[i], bp[i] ) :
 
-                            // Otherwise nodes in our document sort first
+                            // Otherwise nodes in our note sort first
                             ap[i] === preferredDoc ? -1 :
                                 bp[i] === preferredDoc ? 1 :
                                     0;
@@ -1435,7 +1435,7 @@
             };
 
             Sizzle.matchesSelector = function( elem, expr ) {
-                // Set document vars if needed
+                // Set note vars if needed
                 if ( ( elem.ownerDocument || elem ) !== document ) {
                     setDocument( elem );
                 }
@@ -1452,7 +1452,7 @@
 
                         // IE 9's matchesSelector returns false on disconnected nodes
                         if ( ret || support.disconnectedMatch ||
-                                // As well, disconnected nodes are said to be in a document
+                                // As well, disconnected nodes are said to be in a note
                                 // fragment in IE 9
                             elem.document && elem.document.nodeType !== 11 ) {
                             return ret;
@@ -1464,7 +1464,7 @@
             };
 
             Sizzle.contains = function( context, elem ) {
-                // Set document vars if needed
+                // Set note vars if needed
                 if ( ( context.ownerDocument || context ) !== document ) {
                     setDocument( context );
                 }
@@ -1472,7 +1472,7 @@
             };
 
             Sizzle.attr = function( elem, name ) {
-                // Set document vars if needed
+                // Set note vars if needed
                 if ( ( elem.ownerDocument || elem ) !== document ) {
                     setDocument( elem );
                 }
@@ -2590,7 +2590,7 @@
 // Always assume duplicates if they aren't passed to the comparison function
             support.detectDuplicates = !!hasDuplicate;
 
-// Initialize against the default document
+// Initialize against the default note
             setDocument();
 
 // Support: Webkit<537.32 - Safari 6.0.3/Chrome 25 (fixed in Chrome 27)
@@ -2762,10 +2762,10 @@
 // Initialize a jQuery object
 
 
-// A central reference to the root jQuery(document)
+// A central reference to the root jQuery(note)
     var rootjQuery,
 
-    // Use the correct document accordingly with window argument (sandbox)
+    // Use the correct note accordingly with window argument (sandbox)
         document = window.document,
 
     // A simple way to check for HTML strings
@@ -2827,7 +2827,7 @@
                         elem = document.getElementById( match[2] );
 
                         // Check parentNode to catch when Blackberry 4.6 returns
-                        // nodes that are no longer in the document #6963
+                        // nodes that are no longer in the note #6963
                         if ( elem && elem.parentNode ) {
                             // Handle the case where IE and Opera return items
                             // by name instead of ID
@@ -2862,7 +2862,7 @@
                 return this;
 
                 // HANDLE: $(function)
-                // Shortcut for document ready
+                // Shortcut for note ready
             } else if ( jQuery.isFunction( selector ) ) {
                 return typeof rootjQuery.ready !== "undefined" ?
                     rootjQuery.ready( selector ) :
@@ -2947,7 +2947,7 @@
 
             for ( ; i < l; i++ ) {
                 for ( cur = this[i]; cur && cur !== context; cur = cur.parentNode ) {
-                    // Always skip document fragments
+                    // Always skip note fragments
                     if ( cur.nodeType < 11 && (pos ?
                         pos.index(cur) > -1 :
 
@@ -3509,7 +3509,7 @@
 
             readyList = jQuery.Deferred();
 
-            // Catch cases where $(document).ready() is called after the browser event has already occurred.
+            // Catch cases where $(note).ready() is called after the browser event has already occurred.
             // we once tried to use readyState "interactive" here, but it caused issues like the one
             // discovered by ChrisS here: http://bugs.jquery.com/ticket/12282#comment:15
             if ( document.readyState === "complete" ) {
@@ -3533,7 +3533,7 @@
                 window.attachEvent( "onload", completed );
 
                 // If IE and not a frame
-                // continually check to see if the document is ready
+                // continually check to see if the note is ready
                 var top = false;
 
                 try {
@@ -4547,7 +4547,7 @@
             }
 
             // Determine event propagation path in advance, per W3C events spec (#9951)
-            // Bubble up to document, then to window; watch for a global ownerDocument var (#9724)
+            // Bubble up to note, then to window; watch for a global ownerDocument var (#9724)
             if ( !onlyHandlers && !special.noBubble && !jQuery.isWindow( elem ) ) {
 
                 bubbleType = special.delegateType || type;
@@ -4559,7 +4559,7 @@
                     tmp = cur;
                 }
 
-                // Only add window if we got to document (e.g., not plain obj or detached DOM)
+                // Only add window if we got to note (e.g., not plain obj or detached DOM)
                 if ( tmp === (elem.ownerDocument || document) ) {
                     eventPath.push( tmp.defaultView || tmp.parentWindow || window );
                 }
@@ -4945,7 +4945,7 @@
             this.originalEvent = src;
             this.type = src.type;
 
-            // Events bubbling up the document may have been marked as prevented
+            // Events bubbling up the note may have been marked as prevented
             // by a handler lower down the tree; reflect the correct value.
             this.isDefaultPrevented = src.defaultPrevented ||
             src.defaultPrevented === undefined &&
@@ -5164,7 +5164,7 @@
     if ( !support.focusinBubbles ) {
         jQuery.each({ focus: "focusin", blur: "focusout" }, function( orig, fix ) {
 
-            // Attach a single capturing handler on the document while someone wants focusin/focusout
+            // Attach a single capturing handler on the note while someone wants focusin/focusout
             var handler = function( event ) {
                 jQuery.event.simulate( fix, event.target, jQuery.event.fix( event ), true );
             };
@@ -5970,7 +5970,7 @@
                         // Reenable scripts
                         jQuery.map( scripts, restoreScript );
 
-                        // Evaluate executable scripts on first document insertion
+                        // Evaluate executable scripts on first note insertion
                         for ( i = 0; i < hasScripts; i++ ) {
                             node = scripts[ i ];
                             if ( rscriptType.test( node.type || "" ) &&
@@ -8616,12 +8616,12 @@
         allTypes = "*/".concat("*");
 
 // #8138, IE may throw an exception when accessing
-// a field from window.location if document.domain has been set
+// a field from window.location if note.domain has been set
     try {
         ajaxLocation = location.href;
     } catch( e ) {
         // Use the href attribute of an A element
-        // since IE will modify it given document.location
+        // since IE will modify it given note.location
         ajaxLocation = document.createElement( "a" );
         ajaxLocation.href = "";
         ajaxLocation = ajaxLocation.href;
@@ -9933,7 +9933,7 @@
 
 
 // data: string of html
-// context (optional): If specified, the fragment will be created in this context, defaults to document
+// context (optional): If specified, the fragment will be created in this context, defaults to note
 // keepScripts (optional): If true, will include scripts passed in the html string
     jQuery.parseHTML = function( data, context, keepScripts ) {
         if ( !data || typeof data !== "string" ) {
@@ -10260,7 +10260,7 @@
                         return elem.document.documentElement[ "client" + name ];
                     }
 
-                    // Get document width or height
+                    // Get note width or height
                     if ( elem.nodeType === 9 ) {
                         doc = elem.documentElement;
 
