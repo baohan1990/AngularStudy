@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="myController">
+            <h1><pre>ng中的$http</pre></h1>
+            <div>
+                <pre>  1. $http是AngularJS中内置的用于操作XMLHttpRequest对象的服务，只接受一个参数，这个参数是一个对象。这个函数返回一个promise对象，
+                具有success()和error()两个方法。
+                    如果响应状态吗位于200-299之间，会认为响应是成功的，success()方法会被调用；
+                    如果响应结果需要重定向，XMLHttpRequest会跟进这个重定向。
+                    2.$http的一些其他方法
+                        .get();
+                        .post();
+                    3.拦截器(Interceptors)
+                        有时候我们希望为全局的请求和响应添加功能，例如身份验证，错误处理等，在请求发送给服务器之前或者在服务器返回时对其进行拦截，是比较好
+                    的处理方式，
+                        其实际是$http(ng http)服务的基础中间件，用来向业务流程中注入新的逻辑，
+
+
+                </pre>
+            </div>
+            <button ng-click="e4$http();">e4$http</button>
+            <hr>
+        </div>
+    </div>
+</body>
+<script src="../x_directive/angular.js"></script>
+<script>
+    var myApp = angular.module('myApp', []);
+    myApp.controller('myController',function($scope,$http){
+        $scope.e4$http = function(){
+            var promise = $http({
+                method : 'POST',
+                param :{name:'baohan'},
+                url : './_01_e4http.html'
+
+            });
+            promise.success(function(data,status,headers,config){
+                alert(status);
+                alert(data);
+                alert(headers);
+            });
+        }
+    });
+</script>
+</html>
